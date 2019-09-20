@@ -1,16 +1,16 @@
-<svg width="100%" height="20px" version="1.0" state='normal'
+<svg width="100%" version="1.0" state='normal' viewBox="0 0 48 17"
 xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
 
 
     <defs>
 
-        <!-- The right head --> 
+        <!-- green middle line --> 
         <svg class='head input-source' id='right' 
             height="100%"
             width='100%' 
-            viewBox="0 0 15 30"
-            preserveAspectRatio="xMaxYMid"
+            viewBox="0 0 48 17"
+            preserveAspectRatio="xMidYMid"
             >
             <rect width="100%" height="100%"/>
         </svg>
