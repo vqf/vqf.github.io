@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{
+	margin: 0;
+	padding: 0;
+}
+.dbutton{
+		height: 8vh;
+		vertical-align: middle;
+}
+.menus{
+	width: 100%;
+	height: 9vh;
+	padding-left: 1vh;
+	border: thin solid black;
+	border-radius: 1vw;
+}
+#svg{
+	float: right;
+};
+.panel{
+	width: 49vw;
+	height: 90vh;
+	float: left;
+	margin: 0;
+	padding-left: 0.5vw;
+	border: solid thin black;
+	border-radius: 1vh;
+}
+.panel25{
+	width: 24.5vw;
+	height: 90vh;
+	float: left;
+	margin: 0;
+	padding-left: 0.5vw;
+	border: solid thin black;
+	border-radius: 1vh;
+}
+.panel75{
+	width: 74vw;
+	height: 90vh;
+	float: left;
+	margin: 0;
+	padding-left: 0.5vw;
+	border: solid thin black;
+	border-radius: 1%;
+}
+svg{
+	width: 95%;
+	height: 95%;
+}
+</style>
+<script type="text/javascript" src="nvenn.js"></script>
+<script type="text/javascript" src="functions_noworker.js"></script>
+<script>
+	const cboxes = [];
+</script>
+</head>
+<body>
+<div class="menus" id="uppermenu">
+<button class="dbutton" id="getSVG">Download SVG</button>
+<button class="dbutton" id="getPNG">Download PNG</button>
+</div>
+<div class="row" id="noscript">
+<h1>If this message does not disappear, Javascript is inactive</h1>
+<h1>You need to activate Javascript to use this interface</h1>
+</div>
+<div class="panel25" id="info">
+<dialog id="save" closedby="any">
+	<label for="outfile">Output file:</label>
+	<input autofocus id="outfile" name="outfile" type="text" />
+	<button id="downloadpng">Download</button>
+	<form method="dialog">
+		<button>Close</button>
+	</form>
+</dialog>
+<dialog id="safety" closedby="any">
+	<span><a id="safelink">If the download does not start, you can try clicking here</a></span>
+	<form method="dialog">
+		<button autofocus>Close</button>
+	</form>
+</dialog>
+<div id="ticks">
+<div id="checkboxes">
+<p>
+<input type="checkbox" class="cbox" id="groupchk6" name="groupchk6" data-nbit="0"><label for="groupchk6">Pseudo</label>
+<script>cboxes.push(document.getElementById('groupchk6'));</script>
+</p>
+<p>
+<input type="checkbox" class="cbox" id="groupchk5" name="groupchk5" data-nbit="1"><label for="groupchk5">Epidernidis</label>
+<script>cboxes.push(document.getElementById('groupchk5'));</script>
+</p>
+<p>
+<input type="checkbox" class="cbox" id="groupchk4" name="groupchk4" data-nbit="2"><label for="groupchk4">Coryne</label>
+<script>cboxes.push(document.getElementById('groupchk4'));</script>
+</p>
+<p>
+<input type="checkbox" class="cbox" id="groupchk3" name="groupchk3" data-nbit="3"><label for="groupchk3">Neumo</label>
+<script>cboxes.push(document.getElementById('groupchk3'));</script>
+</p>
+<p>
+<input type="checkbox" class="cbox" id="groupchk2" name="groupchk2" data-nbit="4"><label for="groupchk2">Aureus</label>
+<script>cboxes.push(document.getElementById('groupchk2'));</script>
+</p>
+<p>
+<input type="checkbox" class="cbox" id="groupchk1" name="groupchk1" data-nbit="5"><label for="groupchk1">Pyogenes</label>
+<script>cboxes.push(document.getElementById('groupchk1'));</script>
+</p>
+<p>
+<input type="checkbox" class="cbox" id="groupchk0" name="groupchk0" data-nbit="6"><label for="groupchk0">Microbiota</label>
+<script>cboxes.push(document.getElementById('groupchk0'));</script>
+</p>
+<textarea id="reg" rows="20" cols="30">
+</textarea>
+</div>
+</div>
+</div>
+<div class="panel75" id="svg">
+
+</div>
+<script>
+let currentUrl = null;
+const dsvg = document.getElementById('getSVG');
+const dpng = document.getElementById('getPNG');
+const dlg = document.getElementById('save');
+const dlg2 = document.getElementById('safety');
+const outf = document.getElementById('outfile');
+const dod = document.getElementById('downloadpng');
+dsvg.addEventListener('click', preparesvg);
+dpng.addEventListener('click', preparepng);
+outf.addEventListener('keyup', checkfilename);
+dod.addEventListener('click', downloadpng);
+dlg2.addEventListener('close', function(){window.URL.revokeObjectURL(currentUrl);});
+const outp = document.getElementById('reg');
+
+function fromCircle(nreg){
+	for (let i = 0; i < cboxes.length; i++){
+	let nb = 1 << i;
+		if ((nreg & nb) > 0){
+			cboxes[i].checked = true;
+		}
+		else{
+			cboxes[i].checked = false;
+		}
+	}
+}
+function intersection(){
+let region = 0;
+	const checks = document.getElementsByClassName('cbox');
+	for (const c of checks){
+		if (c.checked){
+			let n = c.dataset.nbit;
+			region += 1 << n;
+		}
+	}
+		fromCircle(region);
+}
+function hideMsg(){
+const nosc = document.getElementById('noscript');
+nosc.parentNode.removeChild(nosc);
+}
+hideMsg();
+const checks = document.getElementsByClassName('cbox');
+for (const c of checks){
+	c.addEventListener('click', intersection);
+intersection();
+}
+
+function makePNG(img, jname, callback){
+		let canvas = document.createElement('canvas');
+		const newW = img.width;
+		const newH = img.height;
+		canvas.width = newW;
+		canvas.height = newH;
+
+		let ctx = canvas.getContext('2d');
+		ctx.drawImage(img, 0, 0, newW, newH);
+
+		let canvasdata = canvas.toDataURL('image/png');
+		let a = document.createElement('a');
+		a.id="safelink";
+		a.download = jname + ".png";
+		a.href=canvasdata;
+		if (currentUrl !== null){window.URL.revokeObjectURL(currentUrl);}
+		currentUrl = canvasdata;
+		callback(a);
+}
+
+function downloadLink(a){
+	const lnk = document.getElementById('safelink');
+	const p = lnk.parentNode;
+	const cnt = lnk.innerHTML;
+	a.innerHTML = cnt;
+	p.removeChild(lnk);
+	p.appendChild(a);
+	a.click();
+	dlg.close();
+	dlg2.show();
+}
+
+function toPNG(jname){
+	const svg = document.getElementsByTagName('svg')[0];
+	const svg_xml = (new XMLSerializer()).serializeToString(svg);
+	const blob = new Blob([svg_xml], {type:'image/svg+xml;charset=utf-8'});
+	const url = window.URL.createObjectURL(blob);
+	var newW = 2800;
+	var newH = 2000;
+	var img = new Image();
+	img.width = newW;
+	img.height = newH;
+	img.src = url;
+	if (currentUrl !== null){window.URL.revokeObjectURL(currentUrl);}
+	currentUrl = url;
+	img.addEventListener('load', function(){makePNG(img, jname, downloadLink)});
+}
+
+function toSVG(jname){
+	const svg = document.getElementsByTagName('svg')[0];
+	const svg_xml = (new XMLSerializer()).serializeToString(svg);
+	const blob = new Blob([svg_xml], {type:'image/svg+xml;charset=utf-8'});
+	const url = window.URL.createObjectURL(blob);
+	let a = document.createElement('a');
+	a.id="safelink";
+	a.download = jname + ".svg";
+	a.href=url;
+	console.log(url);
+	if (currentUrl !== null){window.URL.revokeObjectURL(currentUrl);}
+	currentUrl = url;
+	downloadLink(a);
+}
+
+function preparesvg(){
+	dlg.showModal();
+	toSVG(outf.value);
+}
+
+function preparepng(){
+	dlg.showModal();
+}
+
+function downloadpng(){
+	toPNG(outf.value);
+}
+
+function checkfilename(e){
+	if (e.keyCode === 13){
+		downloadpng();
+	}
+}
+</script>
+</body>
+</html>

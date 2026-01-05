@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <title>nVenn2</title>
+    <link rel="stylesheet" type="text/css" href="nvenn2.css">
+    <script type="text/javascript" src="nvenn.js"></script>
+    <script type="text/javascript" src="functions_noworker.js"></script>
+  </head>
+  <body>
+  <script>
+      let cboxes = [];
+  </script>
+  <dialog id="save" closedby="any">
+	<label for="outfile">Output file:</label>
+	<input autofocus id="outfile" name="outfile" type="text" />
+	<button id="downloadpng">Download</button>
+	<form method="dialog">
+		<button>Close</button>
+	</form>
+  </dialog>
+  <div class="popover" id="tryAgain" popover="auto">
+  <h2>Actions</h2>
+  <div>You can create a new diagram with the same data by pressing the button <pre>Try again</pre>. Please, remember that the new diagram will be
+  different from the old one. If you want to keep a diagram, save it using the <pre>Download SVG</pre> and/or <pre>Save as web page</pre> buttons</div>
+  <button popovertarget="tryAgain">Next</button>
+  </div>
+  <div class="popover" id="saveDiagram" popover="auto">
+  <h2>Actions</h2>
+  <div>You can save the diagram in three formats:
+  <ul>
+  <li>With <pre>Download PNG</pre>, you will save a bitmap. Please, notice that bitmaps are limited in resolution, and you will not be able to
+  recover a diagram saved in this format.</li>
+  <li>With <pre>Download SVG</pre>, you will save an SVG file. This is a vectorial format which can be edited (e. g., with Inkscape) and rendered at any resolution.
+  This SVG file can be loaded at any time with <pre>Load a previous run</pre>.</li>
+  <li>With <pre>Save as web page</pre>, you will save an SVG file inside an HTML file. The web page downloaded can be open with any browser. It allows users to
+  explore the regions and extract PNG and SVG files with the diagram. This HTML file can be loaded at any time with <pre>Load a previous run</pre>.</li>
+  </ul>
+  <button popovertarget="saveDiagram">Next</button>
+  </div>
+  </div>
+  <!--
+  <dialog id="loadfile" closedby="any">
+	<label for="infile">Input file:</label>
+	<input autofocus id="infile" name="infile" type="file" />
+	<form method="dialog">
+		<button>Close</button>
+	</form>
+  </dialog>
+  -->
+  <dialog id="load" closedby="none">
+      <div>Loading wasm module...</div>
+  </dialog>
+  <dialog id="safety" closedby="any">
+      <span><a id="safelink">If the download does not start, you can try clicking here</a></span>
+      <form method="dialog">
+          <button autofocus>Close</button>
+      </form>
+  </dialog>
+  <div class="menus" id="uppermenu">
+  <span class="group">
+  <img src="favicon-96.png" class="menusize">
+  <span class="fancyname">nVenn2</span>
+  <button id="tut" class="tutorial">Tutorial</button>
+  <div class="popover" id="helpTut" popover="auto">
+  <h2>nVenn2</h2>
+  <div>nVenn2 draws n-dimensional proportional Venn diagrams from text tables containing sets. To follow the tutorial, simply click <pre>Next</pre> or press <pre>Esc</pre> once you have read each panel.</div>
+  <button popovertarget="helpTut">Next</button>
+  </div>
+  </span>
+  <div class="rightflex group">
+  <button class="unobstrusive" popovertarget="helpload"><img src="help.svg" class="icon" alt="Help"/></button>
+  <div class="popover" id="helpload" popover="auto">
+  <h2>Editing</h2>
+  <div>If you have previously saved an .svg or an .html file with <pre>Download SVG</pre> or <pre>Save as web page</pre>, you can recover, explore and edit the resulting figure. To do so, press the <pre>Browse</pre> button and select the saved file.</div>
+  <button popovertarget="helpload">Next</button>
+  </div>
+<label for="infile">Load a previous run</label><input id="infile" name="infile" type="file" /></div>
+  </div>
+  <div class="row" id="noscript">
+  <h1>If this message does not disappear, Javascript is inactive</h1>
+  <h1>You need to activate Javascript to use this interface</h1>
+  </div>
+
+  <div class="container" id="wrapper">
+    <div class="panel">
+    <div class="tabcont">
+      <div class="tab">
+        <button class="tablinks" id="defaultTab" onclick="openTab(event, 'inputpanel')">Input</button>
+        <button class="tablinks" id="analysis" onclick="openTab(event, 'examine')">Examine</button>
+      </div>
+      <div class="tabcontent" id="inputpanel">
+        <p class="air">Sets are in...<button class="unobstrusive" popovertarget="helpsets"><img src="help.svg" class="icon" alt="Help"/></button>
+        <div class="popover" id="helpsets" popover="auto">
+          <h2>Input</h2>
+          <div>Suppose we have <pre>set1</pre> with elements <pre>a, b</pre> and <pre>set2</pre> with elements <pre>a, c, e</pre>.
+          <ul>
+          <li>Rows. Each row in the table is a set. The first element in each row is the name of the set.</li>
+          <table class="invisitable">
+          <tr><td>set1</td><td>a</td><td>b</td></tr>
+          <tr><td>set2</td><td>a</td><td>c</td><td>e</td></tr>
+          </table>
+          <li>Columns. Each column in the table is a set. The first element in each column is the name of the set.</li>
+          <table class="invisitable">
+          <tr><td>set1</td><td>set2</td><td></td></tr>
+          <tr><td>a</td><td>a</td><td></td></tr>
+          <tr><td>b</td><td>c</td><td></td></tr>
+          <tr><td> </td><td>e</td><td></td></tr>
+          </table>
+          Notice the space character at the beginning of the last line. Without it, element <pre>e</pre> would belong to <pre>set1</pre>.
+          <li>Guess. The program will apply heuristics to decide if the sets in your data are expressed by row or by column.</li>
+          </ul>
+          </div>
+          <button popovertarget="helpsets">Next</button>
+        </div></p>
+        <input type="radio" id="guess" name="bycol" value="guess" checked>
+        <label for="guess">Guess</label> <br>
+        <input type="radio" id="iscol" name="bycol" value="iscol">
+        <label for="iscol">Columns</label> <br>
+        <input type="radio" id="isrow" name="bycol" value="isrow">
+        <label for="isrow">Rows</label> <br>
+        <div class="overlayed">
+            <button id="overlayHelp" class="unobstrusive" popovertarget="helpreg"><img src="help.svg" class="icon" alt="Help"/></button>
+                <div class="popover" id="helpreg" popover="auto">
+                  <h2>Input</h2>
+                  <div>
+                  Write or paste the data for the Venn diagram here. To separate fields, you can use tabs, spaces, commas or semicolons. Please notice that in this example each set is a column. The first row contains each set name.
+                  </div>
+                  <button popovertarget="helpreg">Next</button>
+                </div>
+            <textarea id="reg" rows="20" cols="60" autofocus></textarea>
+        </div>
+        <button id="inputdata">Make diagram</button>
+        <div class="popover" id="helpMake" popover="auto">
+          <h2>Input</h2>
+          <div>Once your data are ready, press this button to start the diagram. This tab will change into Examine mode.</div>
+          <button popovertarget="helpMake">Next</button>
+        </div>
+        <input type="file" accept="text/plain" id="inputfile" />
+        <div class="popover" id="helpFileTable" popover="auto">
+          <h2>Input</h2>
+          <div>Alternatively, you can upload data from a text file</div>
+          <button popovertarget="helpFileTable">Next</button>
+        </div>
+        <button id="exampledata" class="rightflex">Example</button>
+        <div class="popover" id="examplePopover" popover="auto">
+        <h2>Input</h2>
+        <div>Pressing this button writes an example table into the input</div>
+        <button popovertarget="examplePopover">Next</button>
+        </div>
+      </div>
+      <div class="tabcontent" id="examine">
+        <div id="checkboxes">
+        </div>
+        <textarea id="listelements" rows="20" cols="60" readonly>
+        </textarea>
+        <button class="floatright" id="copyRegion">Copy elements</button>
+        <div class="popover" id="helpCopy" popover="auto">
+        <h2>Exploring</h2>
+        <div>You cannot modify the text with the elements. You can select all elements by clicking on it or you can directly copy the contents by clicking this button.</div>
+        <button popovertarget="helpCopy">Next</button>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="popover" id="helpSvg" popover="auto">
+    Waiting for the result...
+    </div>
+    <div class="popover" id="helpExplore" popover="auto">
+    <h2>Exploring</h2>
+    <div>Once the result is ready, you can click on any circle to see which elements it contains. The result will be shown at the left panel. For instance, when clicking the region with the text "(1, 2)", the text area shows the elements that belong to IBA and IDA, but not to IGI or TAS.</div>
+    <button popovertarget="helpExplore">Next</button>
+    </div>
+    <div class="popover" id="helpCheck" popover="auto">
+    <h2>Exploring</h2>
+    <div>You can also explore a region with these checkboxes. For instance, now the text area shows the elements that belong to IBA, IDA and IGI, but not to TAS.</div>
+    <button popovertarget="helpCheck">Next</button>
+    </div>
+
+    <div class="panel" id="svgpanel">
+      <div id="topsvg">
+        <span>Step: </span><span id="info"></span>
+        <div id="saving">
+          <button class="dbutton rightflex" id="getHTML">Save as web page</button>
+          <button class="dbutton rightflex" id="getSVG">Download SVG</button>
+          <button class="dbutton rightflex" id="getPNG">Download PNG</button>
+        </div>
+      </div>
+      <div id="screen" class="bigSVG">
+      <svg class="bigSVG"></svg>
+      </div>
+      <img id="cat" class = "overlay hidden" src="cat.gif" />
+      <div class="tools">
+        <div class="acent">
+          <label for="rotat" id="rotatefig">Rotation</label>
+          <button id="stdown">-</button>
+          <div class="popover" id="helpRotate" popover="auto">
+          <h2>Editing</h2>
+          <div>You can rotate the diagram with the slide or the small buttons at the sides</div>
+          <button popovertarget="helpRotate">Next</button>
+          </div>
+          <input type="range" id="rotat" name="rotat" min="-180" max="180" step="0.25" value="0"></input>
+          <button id="stup">+</button>
+          <span id="angle"></span>
+        </div>
+        <div class="popover" id="demo" popover="auto">
+        See it in action...
+        </div>
+        <div class="acent"><label for="opac" id="opacfig">Opacity</label><input type="range" id="opac" name="opac" min="0" max="1" step="0.1" value="0.4"></input><span id="opacv"></span></div>
+        <div class="popover" id="helpOpacity" popover="auto">
+        <h2>Editing</h2>
+        <div>You can set the opacity of the set fills. The values range between 0 (transparent) and 1 (opaque).</div>
+        <button popovertarget="helpOpacity">Next</button>
+        </div>
+        <div class="acent"><label for="palette">Color palette</label><select name="palette" id="palette"></select></div>
+        <div class="popover" id="helpPalette" popover="auto">
+        <h2>Editing</h2>
+        <div>You can choose a color palette for the set colors</div>
+        <button popovertarget="helpPalette">Next</button>
+        </div>
+        <div class="acent"><label for="linew">Line width</label><select name="linew" id="linew"></select></div>
+        <div class="popover" id="helpLinew" popover="auto">
+        <h2>Editing</h2>
+        <div>You can change the width of set lines</div>
+        <button popovertarget="helpLinew">Next</button>
+        </div>
+        <div class="acent"><label for="fsize">Font size</label><select name="fsize" id="fsize"></select></div>
+        <div class="popover" id="helpFsize" popover="auto">
+        <h2>Editing</h2>
+        <div>You can change Font sizes for the numbers in the diagram. The relative size of labels is constant.</div>
+        <button popovertarget="helpFsize">Next</button>
+        </div>
+        <div class="acent"><label for="srs">Show region sizes<input name="srs" id="srs" checked="true" type="checkbox"></div>
+        <div class="popover" id="helpSrs" popover="auto">
+        <h2>Editing</h2>
+        <div>You can show or hide the number of elements in each region</div>
+        <button popovertarget="helpSrs">Next</button>
+        </div>
+        <div class="acent"><label for="srd">Show region descriptions<input name="srd" id="srd" checked="true" type="checkbox"></div>
+        <div class="popover" id="helpSrd" popover="auto">
+        <h2>Editing</h2>
+        <div>You can show or hide the identifier of each region. Each identifier consists of several numbers in parentheses. Those numbers represent the sets the region belongs to. Each set is represented with the position it occupies in the legend, from top (1) to bottom.</div>
+        <button popovertarget="helpSrd">Next</button>
+        </div>
+      </div>
+      <div id="log">
+      </div>
+      <input id="cpick" type="color" class="hidden" />
+      <div class="popover" id="helpColor" popover="auto">
+      <h2> Editing </h2>
+      <div>You can change the color of each set by clicking the rectangles at the right side of the diagram</div>
+      <button popovertarget="helpColor">Next</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const loading = document.getElementById('load');
+
+    loading.showModal();
+
+    Module['onRuntimeInitialized'] = function() {
+       loading.close();
+
+      //Module._load_sets("");
+      refreshSVG();
+    }
+    const loadfile = document.getElementById('loadfile');
+    const infile = document.getElementById('infile');
+    infile.addEventListener('change', loadPrevRun);
+    let currentUrl = null;
+    const nosc = document.getElementById('noscript');
+    nosc.parentNode.removeChild(nosc);
+    //const ld = document.getElementById('fload');
+    //ld.addEventListener('click', pload);
+    const banim = document.getElementById('getHTML');
+    banim.addEventListener('click', dhtml);
+    const bod = document.getElementById('screen');
+    const bodrot = document.getElementById('rotat');
+    const bodrotv = document.getElementById('angle');
+    bodrot.addEventListener('input', rotateVenn);
+    const stdown = document.getElementById('stdown');
+    const stup = document.getElementById('stup');
+    stdown.addEventListener('click', function(e){bodrot.stepDown(1); rotateVenn(e)});
+    stup.addEventListener('click', function(e){bodrot.stepUp(1); rotateVenn(e)});
+
+    const opac = document.getElementById('opac');
+    const opacv = document.getElementById('opacv');
+    opac.addEventListener('input', setOpacity);
+    const info = document.getElementById('info');
+    const lg = document.getElementById('log');
+    const sig = document.getElementById('sig');
+    const current_angle = document.getElementById('angle');
+    const inputSets = document.getElementById('inputdata');
+    const inputFile = document.getElementById('inputfile');
+    const xample = document.getElementById('exampledata');
+    inputSets.addEventListener('click', sendSets);
+    inputFile.addEventListener('change', sendFile);
+    xample.addEventListener('click', pasteExample);
+    const dsvg = document.getElementById('getSVG');
+    const dpng = document.getElementById('getPNG');
+    const dlg = document.getElementById('save');
+    const dlg2 = document.getElementById('safety');
+    const outf = document.getElementById('outfile');
+    const dod = document.getElementById('downloadpng');
+    const chkboxdiv = document.getElementById('checkboxes');
+    const outp = document.getElementById('listelements');
+    //outp.addEventListener('click', function(){outp.select(); console.log('select');});
+    const copyreg = document.getElementById('copyRegion');
+    copyreg.addEventListener('click', copyRegion);
+    const cpick = document.getElementById('cpick');
+
+    dsvg.addEventListener('click', preparesvg);
+    dpng.addEventListener('click', preparepng);
+    outf.addEventListener('keyup', checkfilename);
+    dod.addEventListener('click', downloadpng);
+    dlg2.addEventListener('close', function(){window.URL.revokeObjectURL(currentUrl);});
+    document.getElementById("defaultTab").click();
+    window.addEventListener('resize', addEditingElements);
+
+    palette.addEventListener('input', changePalette);
+    fsize.addEventListener('input', changeFontSize);
+    linew.addEventListener('input', changeLineWidth);
+
+    const srs = document.getElementById('srs');
+    srs.addEventListener('input', toggleSizes);
+    const srd = document.getElementById('srd');
+    srd.addEventListener('input', toggleDesc);
+
+    initInterface();
+
+    function initInterface(){
+      const npalettes = 4;
+      srs.checked = "checked";
+      srd.checked = "checked";
+      bodrot.value = 0;
+      bodrotv.innerHTML = 0;
+      opac.value = 0.4;
+      opacv.innerHTML = 0.4;
+      const palette = document.getElementById('palette');
+      palette.innerHTML = "";
+      for (let i = 0; i < npalettes; i++){
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = i + 1;
+        palette.appendChild(opt);
+      }
+
+      const fontSizes = [8, 10, 12, 14, 16];
+      const defFs = 1;
+      const lineWidths = [0, 0.1, 0.5, 1, 2, 3, 4];
+      const defLw = 3;
+      const fsize = document.getElementById('fsize');
+      fsize.innerHTML = '';
+      const linew = document.getElementById('linew');
+      linew.innerHTML = '';
+
+      for (let i = 0; i < fontSizes.length; i++){
+        let opt = document.createElement('option');
+        opt.value = fontSizes[i];
+        if (i === defFs){
+          opt.selected = "selected";
+        }
+        opt.innerHTML = fontSizes[i];
+        fsize.appendChild(opt);
+      }
+
+      for (let i = 0; i < lineWidths.length; i++){
+        let opt = document.createElement('option');
+        opt.value = lineWidths[i];
+        if (i === defLw){
+          opt.selected = "selected";
+        }
+        opt.innerHTML = lineWidths[i];
+        linew.appendChild(opt);
+      }
+    }
+
+    const tut = document.getElementById('tut');
+    tut.addEventListener('click', tutorial);
+    const reg = document.getElementById("reg");
+    reg.focus();
+
+  </script>
+  
+  </body>
+</html>
+
+
