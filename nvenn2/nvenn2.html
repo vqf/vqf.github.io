@@ -266,6 +266,7 @@
       //Module._load_sets("");
       refreshSVG();
     }
+    const colorNames = ['Oviedo', 'C&oacute;rdoba', 'Granada', 'Valencia'];
     const loadfile = document.getElementById('loadfile');
     const infile = document.getElementById('infile');
     infile.addEventListener('change', loadPrevRun);
@@ -343,7 +344,7 @@
       for (let i = 0; i < npalettes; i++){
         let opt = document.createElement('option');
         opt.value = i;
-        opt.innerHTML = i + 1;
+        opt.innerHTML = colorNames[i];
         palette.appendChild(opt);
       }
 
