@@ -1,7 +1,7 @@
 let example = "";
 let exanim = "";
 const rinfo = /<desc>([^>]+)<\/desc>/;
-const nspace = /[\s\n]/gsm;
+const nspace = /[\r\n]/gsm;
 const sinfo = /<!-- signature: ([\S\n]+) -->/;
 const rsetname = /<text class="legend"[^>]+>([^<]+)<\/text>/g;
 const descRegex = /<desc id=['"]result['"]>(F[^<]*)<\/desc>/sm;
