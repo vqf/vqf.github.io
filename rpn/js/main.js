@@ -551,9 +551,9 @@ function displayStack(){
             t += `<p class="stack"> ${v} </p>`;
         }
         stackDisplay.innerHTML = t;
-        if (opstack.stack.length === 1){
+        //if (opstack.stack.length === 1){
             showFormula();
-        }
+        //}
     }
 }
 
