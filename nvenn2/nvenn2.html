@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+  <head role="banner">
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" type="image/png" href="favicon.ico">
@@ -59,11 +59,11 @@
           <button autofocus>Close</button>
       </form>
   </dialog>
-  <div class="menus" id="uppermenu">
+  <div role="navigation" class="menus" id="uppermenu">
   <span class="group">
-  <img src="favicon-96.png" class="menusize">
+  <img src="favicon-96.png" class="menusize" aria-label="nVenn logo">
   <span class="fancyname">nVenn2</span>
-  <button id="tut" class="tutorial">Tutorial</button>
+  <button id="tut" class="tutorial"><h1 class="nospace">Tutorial</h1></button>
   <div class="popover" id="helpTut" popover="auto">
   <h2>nVenn2</h2>
   <div>nVenn2 draws n-dimensional proportional Venn diagrams from text tables containing sets. To follow the tutorial, simply click <pre>Next</pre> or press <pre>Esc</pre> once you have read each panel.</div>
@@ -84,7 +84,7 @@
   <h1>You need to activate Javascript to use this interface</h1>
   </div>
 
-  <div class="container" id="wrapper">
+  <div class="container" role="main" id="wrapper">
     <div class="panel">
     <div class="tabcont">
       <div class="tab">
@@ -123,22 +123,22 @@
         <label for="isrow">Rows</label> <br>
         <div class="overlayed">
             <button id="overlayHelp" class="unobstrusive" popovertarget="helpreg"><img src="help.svg" class="icon" alt="Help"/></button>
-                <div class="popover" id="helpreg" popover="auto">
+                <div class="popover" id="helpreg" aria-hidden="true" popover="auto">
                   <h2>Input</h2>
                   <div>
                   Write or paste the data for the Venn diagram here. To separate fields, you can use tabs, spaces, commas or semicolons. Please notice that in this example each set is a column. The first row contains each set name.
                   </div>
                   <button popovertarget="helpreg">Next</button>
                 </div>
-            <textarea id="reg" rows="20" cols="60" autofocus></textarea>
+            <textarea id="reg" rows="20" cols="60" aria-label="Input data" autofocus></textarea>
         </div>
         <button id="inputdata">Make diagram</button>
-        <div class="popover" id="helpMake" popover="auto">
+        <div class="popover" id="helpMake" aria-label="Input help" popover="auto">
           <h2>Input</h2>
           <div>Once your data are ready, press this button to start the diagram. This tab will change into Examine mode.</div>
           <button popovertarget="helpMake">Next</button>
         </div>
-        <input type="file" accept="text/plain" id="inputfile" />
+        <input type="file" accept="text/plain" aria-label="Upload text file" id="inputfile" />
         <div class="popover" id="helpFileTable" popover="auto">
           <h2>Input</h2>
           <div>Alternatively, you can upload data from a text file</div>
@@ -269,6 +269,7 @@
     const colorNames = ['Oviedo', 'C&oacute;rdoba', 'Granada', 'Valencia'];
     const loadfile = document.getElementById('loadfile');
     const infile = document.getElementById('infile');
+    const inputpanel = document.getElementById('analysis');
     infile.addEventListener('change', loadPrevRun);
     let currentUrl = null;
     const nosc = document.getElementById('noscript');

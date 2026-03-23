@@ -561,6 +561,7 @@ setInterval(() => {
 async function sendSets(){
   stopSignal = true;
   await blockUntilEvent("stopped", running);
+  bod.scrollIntoView({ behavior: "smooth", block: "end" });
   stopSignal = false;
   const t = document.getElementById('reg');
   const ic = document.getElementById('iscol');
@@ -1107,6 +1108,7 @@ function setout(nreg){
 
 function fromCircle(nreg){
   document.getElementById("analysis").click();
+  inputpanel.scrollIntoView({ behavior: "smooth", block: "start" });
   for (let i = 0; i < cboxes.length; i++){
     let nb = 1 << i;
     if ((nreg & nb) > 0){

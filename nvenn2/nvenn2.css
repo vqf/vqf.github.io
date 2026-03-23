@@ -1,3 +1,7 @@
+body{
+    padding: 0;
+    margin: 0;
+}
 pre{
 display: inline;
 }
@@ -8,8 +12,7 @@ font-size: xx-large;
 }
 .tutorial{
 height: 100%;
-font-size: larger;
-
+vertical-align: center;
 }
 .overlay{
     position: relative;
@@ -55,6 +58,10 @@ padding: 0;
   top: 2em;
   position: relative;
 }
+.nospace{
+    margin: 0;
+    padding: 0;
+}
 .acent{
 display: flex;
 align-items: center;
@@ -70,19 +77,23 @@ float: right;
 padding-top: 1em;
 }
 .menus{
-    width: 96vw;
-    height: 9vh;
+    width: 99vw;
+    height: 8vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
     margin-left: 0.5vw;
-    margin-right: 1vw;
+    margin-right: 0.5vw;
     padding-left: 1vw;
     padding-right: 1vw;
     border: thin solid black;
-    border-radius: 1vw;
+    border-radius: 0.5vw;
     display: flex;
     justify-content: space-between;
+    box-sizing: border-box;
 }
 .menusize{
-height: 8vh;
+height: 6vh;
+padding: 1vh
 }
 .tools{
 display: flex;
@@ -91,8 +102,16 @@ flex-wrap: wrap;
 flex-direction: row;
 }
 #wrapper{
-height: 89vh;
+height: 86%;
+width: 100vw;
+padding-top: 1%;
+padding-bottom: 1%;
+margin: 0;
+padding-left: 0;
+padding-right: 0;
 border: none;
+flex-direction: row;
+flex-wrap: wrap;
 }
 #angle{
 width: 5em;
@@ -104,10 +123,13 @@ align-items: top;
 justify-content: space-around;
 border: thin solid black;
 border-radius: 1vw;
-width: 100%;
+width: 100vw;
 flex-direction: row;
 flex-wrap: wrap;
-
+margin: 0;
+padding-left: 0;
+padding-right: 0;
+box-sizing: border-box;
 }
 .hidden{
 display: none;
@@ -115,13 +137,30 @@ display: none;
 .shown{
 display: inline;
 }
-.panel{
-border: thin solid black;
-border-radius: 1vw;
-width: 45vw;
-padding: 1vw;
-margin: 0.5vw;
+@media (orientation: landscape) {
+    .panel{
+        border: thin solid black;
+        border-radius: 0.5vw;
+        width: 47%  ;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
+@media (orientation: portrait) {
+    .panel{
+        border: thin solid black;
+        border-radius: 1%;
+        width: 96%;
+        height: 47%;
+        padding-left: 1%;
+        padding-right: 1%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+}
+
 #log{
 display: none;
 position: fixed;
