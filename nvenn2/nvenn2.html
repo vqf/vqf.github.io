@@ -5,6 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" type="image/png" href="favicon.ico">
     <title>nVenn2</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=arimo:400|average-sans:400" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="nvenn2.css">
     <script type="text/javascript" src="nvenn.js"></script>
     <script type="text/javascript" src="functions_noworker.js"></script>
@@ -22,12 +24,14 @@
 	</form>
   </dialog>
   <div class="popover" id="tryAgain" popover="auto">
+  <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
   <h2>Actions</h2>
   <div>You can create a new diagram with the same data by pressing the button <pre>Try again</pre>. Please, remember that the new diagram will be
   different from the old one. If you want to keep a diagram, save it using the <pre>Download SVG</pre> and/or <pre>Save as web page</pre> buttons</div>
   <button popovertarget="tryAgain">Next</button>
   </div>
   <div class="popover" id="saveDiagram" popover="auto">
+  <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
   <h2>Actions</h2>
   <div>You can save the diagram in three formats:
   <ul>
@@ -65,6 +69,7 @@
   <span class="fancyname">nVenn2</span>
   <button id="tut" class="tutorial"><h1 class="nospace">Tutorial</h1></button>
   <div class="popover" id="helpTut" popover="auto">
+  <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
   <h2>nVenn2</h2>
   <div>nVenn2 draws n-dimensional proportional Venn diagrams from text tables containing sets. To follow the tutorial, simply click <pre>Next</pre> or press <pre>Esc</pre> once you have read each panel.</div>
   <button popovertarget="helpTut">Next</button>
@@ -73,6 +78,7 @@
   <div class="rightflex group">
   <button class="unobstrusive" popovertarget="helpload"><img src="help.svg" class="icon" alt="Help"/></button>
   <div class="popover" id="helpload" popover="auto">
+  <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
   <h2>Editing</h2>
   <div>If you have previously saved an .svg or an .html file with <pre>Download SVG</pre> or <pre>Save as web page</pre>, you can recover, explore and edit the resulting figure. To do so, press the <pre>Browse</pre> button and select the saved file.</div>
   <button popovertarget="helpload">Next</button>
@@ -94,6 +100,7 @@
       <div class="tabcontent" id="inputpanel">
         <p class="air">Sets are in...<button class="unobstrusive" popovertarget="helpsets"><img src="help.svg" class="icon" alt="Help"/></button>
         <div class="popover" id="helpsets" popover="auto">
+          <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
           <h2>Input</h2>
           <div>Suppose we have <pre>set1</pre> with elements <pre>a, b</pre> and <pre>set2</pre> with elements <pre>a, c, e</pre>.
           <ul>
@@ -124,6 +131,7 @@
         <div class="overlayed">
             <button id="overlayHelp" class="unobstrusive" popovertarget="helpreg"><img src="help.svg" class="icon" alt="Help"/></button>
                 <div class="popover" id="helpreg" aria-hidden="true" popover="auto">
+                  <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
                   <h2>Input</h2>
                   <div>
                   Write or paste the data for the Venn diagram here. To separate fields, you can use tabs, spaces, commas or semicolons. Please notice that in this example each set is a column. The first row contains each set name.
@@ -134,18 +142,21 @@
         </div>
         <button id="inputdata">Make diagram</button>
         <div class="popover" id="helpMake" aria-label="Input help" popover="auto">
+          <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
           <h2>Input</h2>
           <div>Once your data are ready, press this button to start the diagram. This tab will change into Examine mode.</div>
           <button popovertarget="helpMake">Next</button>
         </div>
         <input type="file" accept="text/plain" aria-label="Upload text file" id="inputfile" />
         <div class="popover" id="helpFileTable" popover="auto">
+          <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
           <h2>Input</h2>
           <div>Alternatively, you can upload data from a text file</div>
           <button popovertarget="helpFileTable">Next</button>
         </div>
         <button id="exampledata" class="rightflex">Example</button>
         <div class="popover" id="examplePopover" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Input</h2>
         <div>Pressing this button writes an example table into the input</div>
         <button popovertarget="examplePopover">Next</button>
@@ -158,6 +169,7 @@
         </textarea>
         <button class="floatright" id="copyRegion">Copy elements</button>
         <div class="popover" id="helpCopy" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Exploring</h2>
         <div>You cannot modify the text with the elements. You can select all elements by clicking on it or you can directly copy the contents by clicking this button.</div>
         <button popovertarget="helpCopy">Next</button>
@@ -169,11 +181,13 @@
     Waiting for the result...
     </div>
     <div class="popover" id="helpExplore" popover="auto">
+    <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
     <h2>Exploring</h2>
     <div>Once the result is ready, you can click on any circle to see which elements it contains. The result will be shown at the left panel. For instance, when clicking the region with the text "(1, 2)", the text area shows the elements that belong to IBA and IDA, but not to IGI or TAS.</div>
     <button popovertarget="helpExplore">Next</button>
     </div>
     <div class="popover" id="helpCheck" popover="auto">
+    <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
     <h2>Exploring</h2>
     <div>You can also explore a region with these checkboxes. For instance, now the text area shows the elements that belong to IBA, IDA and IGI, but not to TAS.</div>
     <button popovertarget="helpCheck">Next</button>
@@ -197,6 +211,7 @@
           <label for="rotat" id="rotatefig">Rotation</label>
           <button id="stdown">-</button>
           <div class="popover" id="helpRotate" popover="auto">
+          <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
           <h2>Editing</h2>
           <div>You can rotate the diagram with the slide or the small buttons at the sides</div>
           <button popovertarget="helpRotate">Next</button>
@@ -210,36 +225,42 @@
         </div>
         <div class="acent"><label for="opac" id="opacfig">Opacity</label><input type="range" id="opac" name="opac" min="0" max="1" step="0.1" value="0.4"></input><span id="opacv"></span></div>
         <div class="popover" id="helpOpacity" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Editing</h2>
         <div>You can set the opacity of the set fills. The values range between 0 (transparent) and 1 (opaque).</div>
         <button popovertarget="helpOpacity">Next</button>
         </div>
         <div class="acent"><label for="palette">Color palette</label><select name="palette" id="palette"></select></div>
         <div class="popover" id="helpPalette" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Editing</h2>
         <div>You can choose a color palette for the set colors</div>
         <button popovertarget="helpPalette">Next</button>
         </div>
         <div class="acent"><label for="linew">Line width</label><select name="linew" id="linew"></select></div>
         <div class="popover" id="helpLinew" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Editing</h2>
         <div>You can change the width of set lines</div>
         <button popovertarget="helpLinew">Next</button>
         </div>
         <div class="acent"><label for="fsize">Font size</label><select name="fsize" id="fsize"></select></div>
         <div class="popover" id="helpFsize" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Editing</h2>
         <div>You can change Font sizes for the numbers in the diagram. The relative size of labels is constant.</div>
         <button popovertarget="helpFsize">Next</button>
         </div>
         <div class="acent"><label for="srs">Show region sizes<input name="srs" id="srs" checked="true" type="checkbox"></div>
         <div class="popover" id="helpSrs" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Editing</h2>
         <div>You can show or hide the number of elements in each region</div>
         <button popovertarget="helpSrs">Next</button>
         </div>
         <div class="acent"><label for="srd">Show region descriptions<input name="srd" id="srd" checked="true" type="checkbox"></div>
         <div class="popover" id="helpSrd" popover="auto">
+        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Editing</h2>
         <div>You can show or hide the identifier of each region. Each identifier consists of several numbers in parentheses. Those numbers represent the sets the region belongs to. Each set is represented with the position it occupies in the legend, from top (1) to bottom.</div>
         <button popovertarget="helpSrd">Next</button>
@@ -249,6 +270,7 @@
       </div>
       <input id="cpick" type="color" class="hidden" />
       <div class="popover" id="helpColor" popover="auto">
+      <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
       <h2> Editing </h2>
       <div>You can change the color of each set by clicking the rectangles at the right side of the diagram</div>
       <button popovertarget="helpColor">Next</button>
@@ -273,6 +295,7 @@
     infile.addEventListener('change', loadPrevRun);
     let currentUrl = null;
     const nosc = document.getElementById('noscript');
+    const cancelTutorial = document.getElementsByClassName('stop_tutorial');
     nosc.parentNode.removeChild(nosc);
     //const ld = document.getElementById('fload');
     //ld.addEventListener('click', pload);
@@ -377,6 +400,10 @@
         opt.innerHTML = lineWidths[i];
         linew.appendChild(opt);
       }
+    }
+
+    for (b of cancelTutorial){
+      b.addEventListener('click', canceltut);
     }
 
     const tut = document.getElementById('tut');

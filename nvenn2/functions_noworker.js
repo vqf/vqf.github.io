@@ -1351,6 +1351,15 @@ const tutorialSteps = [
 ];
 let currentTutorialStep = 0;
 
+function canceltut(){
+  const cpopid = tutorialSteps[currentTutorialStep].popover;
+  const pop = document.getElementById(cpopid);
+  if (pop !== null && pop !== undefined){
+    currentTutorialStep = currentTutorialStep.length - 1;
+    pop.hidePopover();
+  }
+}
+
 
 function setByCol(){
   const iscol = document.getElementById('iscol');
