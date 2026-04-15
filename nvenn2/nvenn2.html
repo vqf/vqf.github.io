@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" href="favicon.ico">
     <title>nVenn2</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=arimo:400|average-sans:400" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=arimo:400|average-sans:400|arimo:700" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="nvenn2.css">
     <script type="text/javascript" src="nvenn.js"></script>
     <script type="text/javascript" src="functions_noworker.js"></script>
@@ -82,8 +82,9 @@
   <h2>Editing</h2>
   <div>If you have previously saved an .svg or an .html file with <pre>Download SVG</pre> or <pre>Save as web page</pre>, you can recover, explore and edit the resulting figure. To do so, press the <pre>Browse</pre> button and select the saved file.</div>
   <button popovertarget="helpload">Next</button>
+  <input id="infile" accept=".svg,text/html" aria-label="Upload previous result" class="uploader" name="infile" type="file" /></div>
+  <label for="infile" id="inlabel" class="custom-file-upload"><span class="btext">Load a previous run</span></label>
   </div>
-<label for="infile">Load a previous run</label><input id="infile" name="infile" type="file" /></div>
   </div>
   <div class="row" id="noscript">
   <h1>If this message does not disappear, Javascript is inactive</h1>
@@ -140,21 +141,24 @@
                 </div>
             <textarea id="reg" rows="20" cols="60" aria-label="Input data" autofocus></textarea>
         </div>
-        <button id="inputdata">Make diagram</button>
+        <button id="inputdata"><p class="btext">Make diagram</p></button>
         <div class="popover" id="helpMake" aria-label="Input help" popover="auto">
           <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
           <h2>Input</h2>
           <div>Once your data are ready, press this button to start the diagram. This tab will change into Examine mode.</div>
           <button popovertarget="helpMake">Next</button>
         </div>
-        <input type="file" accept="text/plain" aria-label="Upload text file" id="inputfile" />
+        <input type="file" accept="text/plain" aria-label="Upload text file" id="inputfile" class="uploader" />
+        <label for="inputfile" class="custom-file-upload" id="inputlabel">
+          <span class="btext">Read from file</span>
+        </label>
         <div class="popover" id="helpFileTable" popover="auto">
           <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
           <h2>Input</h2>
           <div>Alternatively, you can upload data from a text file</div>
           <button popovertarget="helpFileTable">Next</button>
         </div>
-        <button id="exampledata" class="rightflex">Example</button>
+        <button id="exampledata" class="rightflex"><p class="btext">Example</p></button>
         <div class="popover" id="examplePopover" popover="auto">
         <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Input</h2>
@@ -167,7 +171,7 @@
         </div>
         <textarea id="listelements" rows="20" cols="60" readonly>
         </textarea>
-        <button class="floatright" id="copyRegion">Copy elements</button>
+        <button class="floatright" id="copyRegion"><p class="btext">Copy elements</p></button>
         <div class="popover" id="helpCopy" popover="auto">
         <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
         <h2>Exploring</h2>
@@ -197,9 +201,9 @@
       <div id="topsvg">
         <span>Step: </span><span id="info"></span>
         <div id="saving">
-          <button class="dbutton rightflex" id="getHTML">Save as web page</button>
-          <button class="dbutton rightflex" id="getSVG">Download SVG</button>
-          <button class="dbutton rightflex" id="getPNG">Download PNG</button>
+          <button class="dbutton rightflex" id="getHTML"><p class="btext">Save as web page</p></button>
+          <button class="dbutton rightflex" id="getSVG"><p class="btext">Download SVG</p></button>
+          <button class="dbutton rightflex" id="getPNG"><p class="btext">Download PNG</p></button>
         </div>
       </div>
       <div id="screen" class="bigSVG">
@@ -352,6 +356,11 @@
     srs.addEventListener('input', toggleSizes);
     const srd = document.getElementById('srd');
     srd.addEventListener('input', toggleDesc);
+/*
+    const inputs = document.getElementsByClassName('mockbutton');
+    for (el of inputs){
+      el.addEventListener('click', function(e){console.log(e)});
+    }*/
 
     initInterface();
 

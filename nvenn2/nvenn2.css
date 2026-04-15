@@ -2,11 +2,17 @@ body{
     padding: 0;
     margin: 0;
     font-family: 'Arimo', sans-serif;
-    font-size: normal;
 }
 
 .stop_tutorial{
     float: right;
+}
+
+.btext{
+    font-family: 'Arimo', sans-serif;
+    font-weight: 700;
+    padding:0.5em;
+    margin:0;
 }
 
 button{
@@ -15,6 +21,28 @@ button{
 input{
     font-family: 'Arimo', sans-serif;
 }
+
+.uploader{
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+border: 0;
+}
+.custom-file-upload {
+    background-color: ButtonFace;
+    color: ButtonText;
+    border: 1px solid;
+    border-color: ButtonBorder;
+    border-radius: 6px;
+    font-weight: 400;
+}
+.custom-file-upload:hover{
+    background-color: #bbbbbb;
+}
+
 pre{
 display: inline;
 }
@@ -27,6 +55,20 @@ font-size: xx-large;
 height: 100%;
 vertical-align: center;
 }
+
+
+#screen{
+    anchor-name: --forcat;
+}
+.overlay{
+    position: absolute;
+    width: 300px;
+    height: 180px;
+    position-anchor: --forcat;
+    bottom: anchor(bottom);
+}
+
+/*
 .overlay{
     position: relative;
     top: -260px;
@@ -35,7 +77,7 @@ vertical-align: center;
     width: 300px;
     height: 180px;
     object-position: center;
-}
+}*/
 .invisitable{
 border: 1px solid black;
 }
@@ -92,6 +134,7 @@ padding-top: 1em;
 .menus{
     width: 99vw;
     height: 8vh;
+    min-height: 3em;
     padding-top: 1vh;
     padding-bottom: 1vh;
     margin-left: 0.5vw;

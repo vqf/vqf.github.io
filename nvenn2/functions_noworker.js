@@ -948,9 +948,12 @@ function prepareResult(error){
   const g = document.getElementById('tagain');
   if (g === null){
     const tagain = document.createElement('button');
+    const ttext = document.createElement('p');
+    ttext.classList.add('btext');
+    ttext.textContent = 'Try again';
     tagain.id = 'tagain';
     tagain.classList.add('rightflex');
-    tagain.textContent = "Try again";
+    tagain.appendChild(ttext);
     tagain.addEventListener('click', reSend);
     const el = document.getElementById('topsvg');
     el.appendChild(tagain);
@@ -1016,14 +1019,14 @@ function refreshSVG(){
 }
 
 function setOpacity(){
-  const v = opac.value;
+  const v = opac.value * 1;
   if (v < 0){
     v = 0;
   }
   if (v > 1){
     v = 1;
   }
-  opacv.innerHTML = v;
+  opacv.innerHTML = v.toFixed(1);
   Module._set_opacity(v);
   refreshSVG();
   document.dispatchEvent(finishedSvg);
@@ -1059,14 +1062,14 @@ function setAllEdits(){
     Module._set_color(nset + 1, 1 * rgb[0], 1 * rgb[1], 1 * rgb[2]);
   }
 
-  const vo = opac.value;
+  const vo = opac.value * 1;
   if (vo < 0){
     vo = 0;
   }
   if (vo > 1){
     vo = 1;
   }
-  opacv.innerHTML = vo;
+  opacv.innerHTML = vo.toFixed(1);
   Module._set_opacity(vo);
   //console.log(vo);
 
@@ -1323,7 +1326,7 @@ const tutorialSteps = [
   {'anchor': 'tut', 'popover': 'helpTut'},
   {'anchor': 'exampledata', 'popover': 'examplePopover'},
   {'anchor': 'reg', 'popover': 'helpreg', 'extra': function(){xample.click()}},
-  {'anchor': 'inputfile', 'popover': 'helpFileTable'},
+  {'anchor': 'inputlabel', 'popover': 'helpFileTable'},
   {'anchor': 'iscol', 'popover': 'helpsets'},
   {'anchor': 'inputdata', 'popover': 'helpMake', 'extra': setByCol},
   {'anchor': 'screen', 'popover': 'helpSvg', 'trigger': "finishedSvg", 'extra': function(){inputSets.click()}},
@@ -1347,7 +1350,7 @@ const tutorialSteps = [
   {'anchor': 'srd', 'popover': 'demo', 'extra': showSrd, 'trigger': "finishedTutorialStep"},
   {'anchor': 'tagain', 'popover': 'tryAgain'},
   {'anchor': 'getPNG', 'popover': 'saveDiagram'},
-  {'anchor': 'infile', 'popover': 'helpload'}
+  {'anchor': 'inlabel', 'popover': 'helpload'}
 ];
 let currentTutorialStep = 0;
 
