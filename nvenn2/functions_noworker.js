@@ -16,6 +16,7 @@ let lastAngle = 0;
 let rotating = false;
 
 const stopEvent = new Event("stopped");
+const showPop = new Event('popped');
 const endRotEvent = new Event("endRot");
 const finishedSvg = new Event("finishedSvg");
 const finishedTutorialStep = new Event("finishedTutorialStep");
@@ -562,6 +563,7 @@ async function sendSets(){
   stopSignal = true;
   await blockUntilEvent("stopped", running);
   bod.scrollIntoView({ behavior: "smooth", block: "end" });
+  hideExh();
   stopSignal = false;
   const t = document.getElementById('reg');
   const ic = document.getElementById('iscol');
@@ -606,6 +608,7 @@ function hideCat(){
 function loadPrevRun(){
   const inf = infile.files[0];
   const reader = new FileReader();
+  hideExh();
   reader.readAsText(inf, "UTF-8");
   reader.addEventListener('load', function(e){
     const ftxt = e.target.result;
@@ -638,6 +641,7 @@ async function pauseRun(){
 
 
 async function sendFile(e){
+  hideExh();
   stopSignal = true;
   await blockUntilEvent("stopped", running);
   const inp = e.target.files[0];
@@ -647,6 +651,7 @@ async function sendFile(e){
 }
 
 function pasteExample(){
+  hideExh();
   reg.value = xdata;
 }
 
@@ -935,6 +940,7 @@ function addEditingElements(){
 
 function prepareResult(error){
   refreshSVG();
+  hideExh();
   step = 1;
   if (error > 0){
     info.innerHTML = UTF8ToString(Module._errorMsg());
@@ -1262,7 +1268,7 @@ function checkfilename(e){
 
 function toHTML(jname){
   const svg = UTF8ToString(Module._html());
-  console.log(svg);
+  //console.log(svg);
   //const svg_xml = (new XMLSerializer()).serializeToString(svg);
   const blob = new Blob([svg], {type:'text/html;charset=utf-8'});
   const url = window.URL.createObjectURL(blob);
@@ -1330,6 +1336,7 @@ const tutorialSteps = [
   {'anchor': 'iscol', 'popover': 'helpsets'},
   {'anchor': 'inputdata', 'popover': 'helpMake', 'extra': setByCol},
   {'anchor': 'screen', 'popover': 'helpSvg', 'trigger': "finishedSvg", 'extra': function(){inputSets.click()}},
+  {'anchor': 'exhaustive', 'popover': 'helpExhaustive'},
   {'anchor': 'groupchk3', 'popover': 'helpExplore', 'extra': function(){fromCircle(3)}},
   {'anchor': 'copyRegion', 'popover': 'helpCopy', 'extra': checkTheThird},
   {'anchor': 'c2', 'popover': 'helpColor'},
@@ -1355,12 +1362,84 @@ const tutorialSteps = [
 let currentTutorialStep = 0;
 
 function canceltut(){
-  const cpopid = tutorialSteps[currentTutorialStep].popover;
-  const pop = document.getElementById(cpopid);
-  if (pop !== null && pop !== undefined){
-    currentTutorialStep = currentTutorialStep.length - 1;
+  for (epop of tutorialSteps){
+    let pop = document.getElementById(epop.popover);
+    if (pop.matches(":popover-open")) {
+      pop.hidePopover();
+      pop.removeEventListener('toggle', tutorialStep);
+    }
+  }
+  cleanTutorial();
+}
+
+async function prepareExhaustive(){
+  stopSignal = true;
+  await blockUntilEvent("stopped", running);
+  stopSignal = false;
+  const t = document.getElementById('reg');
+  const ic = document.getElementById('iscol');
+  const ir = document.getElementById('isrow');
+  const txt = t.value;
+  initInterface();
+  if (txt.length > 0){
+    let bycol = 0;
+    if (ic.checked){
+      bycol = 1;
+    }
+    if (ir.checked){
+      bycol = 2;
+    }
+    step = 1;
+    currentSets = txt;
+    currentByCol = bycol;
+    const snd = stringToNewUTF8(txt);
+    Module._load_sets(snd, bycol);
+    Module._set_step(step);
+    const nreg = Module._nregions();
+    const depth = document.getElementById('toggledepth');
+    const numb = document.getElementById('maxlevel');
+    numb.min = 1;
+    numb.max = nreg;
+    numb.value = 1;
+    estimate();
+    depth.style.display = "contents";
+  }
+}
+
+function hideExh(){
+  const depth = document.getElementById('toggledepth');
+  depth.style.display = "none";
+  const pop = document.getElementById('running');
+  if (pop.matches(":popover-open")) {
     pop.hidePopover();
   }
+}
+
+function estimate(){
+  let level = mlevel.value;
+  let time = Module._estimate_time(level);
+  const showest = document.getElementById('esttime');
+  showest.innerHTML = `${time.toFixed(2)} seconds`;
+}
+
+
+
+
+function runExhaustive(){
+  const pop = document.getElementById('running');
+  if (!pop.matches(":popover-open")) {
+    pop.showPopover();
+  }
+  setTimeout(runit, 100);
+
+}
+
+function runit(){
+  let level = mlevel.value;
+  Module._run(level);
+  let r = Module._error();
+  const pop = document.getElementById('running');
+  prepareResult(r);
 }
 
 
