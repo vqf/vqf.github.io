@@ -99,6 +99,29 @@
         <button class="tablinks" id="analysis" onclick="openTab(event, 'examine')">Examine</button>
       </div>
       <div class="tabcontent" id="inputpanel">
+        <div class="popover" id="helpExhaustive" popover="auto">
+          <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
+          <h2>Exhaustive mode</h2>
+          <div>(Not recommended) You can use this button to try the exhaustive mode, in which all the possible swaps are examined up to a certain level. In most cases,
+          this algorithm is inferior to the default, and it can make your system unresponsive for a long time. With a depth of one, the minimization steps
+          consider every pairwise swap of regions. With a detph of two, the minimization steps also consider every two-pair swap of regions, and so forth.
+          With a depth equal to the number of regions,
+          all possible combinations will be tested, which may take a very long time. You will get an estimation of the computing time needed for a given
+          depth level.</div>
+          <button popovertarget="helpExhaustive">Next</button>
+        </div>
+        <div class="exh">
+        <button id="exhaustive"><p class="btext">Exhaustive</p></button>
+        <button class="unobstrusive" popovertarget="helpExhaustive"><img src="help.svg" class="icon" alt="Help"/></button>
+        <span id="toggledepth">
+        <label for="maxlevel">Depth: </label><input id="maxlevel" type="number" />
+        <label for="esttime">Estimated time: </label><span id="esttime"></span>
+        <button id="rexh">Run!</button>
+        <div class="popover" id="running" popover="auto">
+        The simulation is running...
+        </div>
+        </span>
+        </div>
         <p class="air">Sets are in...<button class="unobstrusive" popovertarget="helpsets"><img src="help.svg" class="icon" alt="Help"/></button>
         <div class="popover" id="helpsets" popover="auto">
           <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
@@ -165,29 +188,6 @@
         <div>Pressing this button writes an example table into the input</div>
         <button popovertarget="examplePopover">Next</button>
         </div>
-      </div>
-      <div class="popover" id="helpExhaustive" popover="auto">
-        <button class="stop_tutorial"><p>End</p><p>tutorial</p></button>
-        <h2>Exhaustive mode</h2>
-        <div>You can also use this button to try the exhaustive mode, in which all the possible swaps are examined up to a certain level. In most cases,
-        this algorithm is inferior to the default, and it can make your system unresponsive for a long time. With a depth of one, the minimization steps
-        consider every pairwise swap of regions. With a detph of two, the minimization steps also consider every two-pair swap of regions, and so forth.
-        With a depth equal to the number of regions,
-        all possible combinations will be tested, which may take a very long time. You will get an estimation of the computing time needed for a given
-        depth level.</div>
-        <button popovertarget="helpExhaustive">Next</button>
-      </div>
-      <div class="exh">
-      <button id="exhaustive"><p class="btext">Exhaustive</p></button>
-      <button class="unobstrusive" popovertarget="helpExhaustive"><img src="help.svg" class="icon" alt="Help"/></button>
-      <span id="toggledepth">
-      <label for="maxlevel">Depth: </label><input id="maxlevel" type="number" />
-      <label for="esttime">Estimated time: </label><span id="esttime"></span>
-      <button id="rexh">Run!</button>
-      <div class="popover" id="running" popover="auto">
-      The simulation is running...
-      </div>
-      </span>
       </div>
       <div class="tabcontent" id="examine">
         <div id="checkboxes">
