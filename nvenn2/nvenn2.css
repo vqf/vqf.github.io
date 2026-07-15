@@ -4,6 +4,25 @@ body{
     font-family: 'Arimo', sans-serif;
 }
 
+@keyframes cit {
+    0% {background-color: #a00;}
+    50% {background-color: #00a;}
+    100% {background-color: ButtonFace;}
+}
+
+#citation{
+    margin: 0.5em;
+    padding: 0.5em;
+    animation-name: att;
+    animation-duration: 0.5s;
+    animation-iteration-count: 5;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid;
+    border-color: ButtonBorder;
+    border-radius: 6px;
+}
+
 .stop_tutorial{
     float: right;
 }
