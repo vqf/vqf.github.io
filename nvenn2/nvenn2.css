@@ -10,7 +10,7 @@ body{
     100% {background-color: ButtonFace;}
 }
 
-#citation{
+#citation, #nvenn2r, #nvenn2py{
     margin: 0.5em;
     padding: 0.5em;
     animation-name: att;
@@ -73,6 +73,7 @@ font-size: xx-large;
 .tutorial{
 height: 100%;
 vertical-align: center;
+margin: 0.5em;
 }
 
 
